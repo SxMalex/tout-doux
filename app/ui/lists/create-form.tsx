@@ -22,7 +22,7 @@ export default function Form() {
         {/* List Name */}
         <div className="mb-4">
           <label htmlFor="listName" className="mb-2 block text-sm font-medium">
-            Comment s'apelle votre liste ? 
+            Comment se nomme votre liste ? 
           </label>
           <div className="relative mt-2 rounded-md">
             <div className="relative">
