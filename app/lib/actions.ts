@@ -37,6 +37,7 @@ export async function createList(prevState: State, formData: FormData) {
   const session = await auth()
   console.log("createList")
   console.log(session)
+  console.log(prevState)
   const user = await sql`SELECT * FROM tout_doux_users WHERE name = ${session?.user.name}`;
   const userId = user.rows[0].id
 
