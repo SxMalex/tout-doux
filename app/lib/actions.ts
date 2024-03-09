@@ -35,13 +35,8 @@ const CreateList = FormSchema.omit({ userId: true });
 export async function createList(prevState: State, formData: FormData) {
 
   const session = await auth()
-  console.log("createList")
-  console.log(session)
-  console.log(prevState)
-  const user = await sql`SELECT * FROM tout_doux_users WHERE name = ${session?.user.name}`;
-  const userId = user.rows[0].id
 
-  if (!userId) {
+  if (!session?.user.id) {
     return {
       message: 'lol',
     };
@@ -63,7 +58,7 @@ export async function createList(prevState: State, formData: FormData) {
   try {
     await sql`
       INSERT INTO tout_doux_lists (name, user_id)
-      VALUES (${name}, ${userId})
+      VALUES (${name}, ${session?.user.id})
     `;
   } catch (error) {
     return {
