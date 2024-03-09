@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import { UpdateList, DeleteList } from '@/app/ui/lists/buttons';
-import InvoiceStatus from '@/app/ui/invoices/status';
 import { fetchFilteredLists } from '@/app/lib/data';
 
 export default async function ListsTable({

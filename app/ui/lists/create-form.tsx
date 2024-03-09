@@ -13,7 +13,7 @@ import { useFormState } from 'react-dom';
 
 
 export default function Form() {
-  const initialState = { message: null, errors: {} };
+  const initialState = { message: "", errors: {} };
   const [state, dispatch] = useFormState(createList, initialState);
   return (
     <form action={dispatch}>

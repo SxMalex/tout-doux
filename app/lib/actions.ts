@@ -31,16 +31,18 @@ export async function authenticate(
   }
 }
 
+// This is temporary until @types/react-dom is updated
+export type State = {
+  errors?: {
+    name?: string[];
+  };
+  message?: string | null;
+};
+
 const CreateList = FormSchema.omit({ userId: true });
 export async function createList(prevState: State, formData: FormData) {
 
   const session = await auth()
-
-  if (!session?.user.id) {
-    return {
-      message: 'lol',
-    };
-  }
 
   const validatedFields = CreateList.safeParse({
     name: formData.get('listName')
@@ -58,7 +60,7 @@ export async function createList(prevState: State, formData: FormData) {
   try {
     await sql`
       INSERT INTO tout_doux_lists (name, user_id)
-      VALUES (${name}, ${session?.user.id})
+      VALUES (${name}, ${session?.user?.id})
     `;
   } catch (error) {
     return {

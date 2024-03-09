@@ -6,7 +6,6 @@ import {
   ListsTable,
 } from './definitions';
 import { unstable_noStore as noStore } from 'next/cache';
-import type { User } from '@/app/lib/definitions';
 
 const ITEMS_PER_PAGE = 6;
 export async function fetchFilteredLists(
