@@ -81,3 +81,33 @@ export async function deleteList(id: string) {
   }
   revalidatePath('/home');
 }
+
+const UpdateList = FormSchema.omit({ id: true });
+export async function updateList(id: string, prevState: State, formData: FormData) {
+
+  const validatedFields = CreateList.safeParse({
+    name: formData.get('listName'),
+  });
+
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: 'Missing Fields. Failed to Uptate Invoice.',
+    };
+  }
+
+  const { name } = validatedFields.data;
+  
+  try {
+    await sql`
+        UPDATE tout_doux_lists
+        SET name = ${name}
+        WHERE id = ${id}
+      `;
+  } catch (error) {
+    return { message: 'Database Error: Failed to Update Invoice.' };
+  }
+ 
+  revalidatePath('/home');
+  redirect('/home');
+}

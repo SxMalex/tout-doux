@@ -4,6 +4,7 @@ import {
   User,
   List,
   ListsTable,
+  ListsForm,
 } from './definitions';
 import { unstable_noStore as noStore } from 'next/cache';
 import { auth } from '@/auth';
@@ -53,6 +54,23 @@ export async function fetchListsPages(query: string) {
   } catch (error) {
     console.error('Database Error:', error);
     throw new Error('Failed to fetch total number of invoices.');
+  }
+}
+
+export async function fetchListById(id: string) {
+  noStore();
+  try {
+    const lists = await sql<ListForm>`
+      SELECT
+        lists.id,
+        lists.name
+      FROM tout_doux_lists AS lists
+      WHERE lists.id = ${id};
+    `;
+    return lists.rows[0];
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch lists.');
   }
 }
 

@@ -20,3 +20,8 @@ export type ListsTable = {
   id: string;
   name: string;
 };
+
+export type ListsForm = {
+  id: string;
+  name: number;
+};
