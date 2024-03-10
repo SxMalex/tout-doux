@@ -4,7 +4,7 @@ import {
   User,
   List,
   ListsTable,
-  ListsForm,
+  ListForm,
 } from './definitions';
 import { unstable_noStore as noStore } from 'next/cache';
 import { auth } from '@/auth';

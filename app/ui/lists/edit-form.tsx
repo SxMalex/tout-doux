@@ -17,7 +17,7 @@ export default function EditListForm({
 }: {
   list: ListForm;
 }) {
-  const initialState = { message: null, errors: {} };
+  const initialState = { message: "", errors: {} };
   const updateListWithId = updateList.bind(null, list.id);
   const [state, dispatch] = useFormState(updateListWithId, initialState);
   return (

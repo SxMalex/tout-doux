@@ -82,7 +82,7 @@ export async function deleteList(id: string) {
   revalidatePath('/home');
 }
 
-const UpdateList = FormSchema.omit({ id: true });
+const UpdateList = FormSchema.omit({ userId: true });
 export async function updateList(id: string, prevState: State, formData: FormData) {
 
   const validatedFields = CreateList.safeParse({

@@ -21,7 +21,7 @@ export type ListsTable = {
   name: string;
 };
 
-export type ListsForm = {
+export type ListForm = {
   id: string;
   name: number;
 };
