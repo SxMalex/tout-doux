@@ -6,13 +6,17 @@ import {
   ListsTable,
 } from './definitions';
 import { unstable_noStore as noStore } from 'next/cache';
+import { auth } from '@/auth';
 
 const ITEMS_PER_PAGE = 6;
+
 export async function fetchFilteredLists(
   query: string,
   currentPage: number,
 ) {
   noStore();
+  const session = await auth()
+
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 
   try {
@@ -22,8 +26,8 @@ export async function fetchFilteredLists(
         lists.name
       FROM tout_doux_lists AS lists
       JOIN tout_doux_users AS users ON lists.user_id = users.id
-      WHERE
-        lists.name ILIKE ${`%${query}%`}
+      WHERE lists.name ILIKE ${`%${query}%`}
+        AND lists.user_id = ${`${session?.user?.id}`}::uuid
       LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
     `;
     return lists.rows;
@@ -35,11 +39,13 @@ export async function fetchFilteredLists(
 
 export async function fetchListsPages(query: string) {
   noStore();
+  const session = await auth()
   try {
     const count = await sql`SELECT COUNT(*)
     FROM tout_doux_lists AS lists
     JOIN tout_doux_users AS users ON lists.user_id = users.id
     WHERE lists.name ILIKE ${`%${query}%`}
+      AND lists.user_id = ${`${session?.user?.id}`}::uuid
   `;
 
     const totalPages = Math.ceil(Number(count.rows[0].count) / ITEMS_PER_PAGE);
