@@ -59,13 +59,15 @@ export async function fetchListsPages(query: string) {
 
 export async function fetchListById(id: string) {
   noStore();
+  const session = await auth()
   try {
     const lists = await sql<ListForm>`
       SELECT
         lists.id,
         lists.name
       FROM tout_doux_lists AS lists
-      WHERE lists.id = ${id};
+      WHERE lists.id = ${id}
+        AND lists.user_id = ${`${session?.user?.id}`}::uuid
     `;
     return lists.rows[0];
   } catch (error) {

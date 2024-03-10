@@ -72,8 +72,11 @@ export async function createList(prevState: State, formData: FormData) {
 }
 
 export async function deleteList(id: string) {
+  
+  const session = await auth()
+
   try {
-    await sql`DELETE FROM tout_doux_lists WHERE id = ${id}`;
+    await sql`DELETE FROM tout_doux_lists WHERE id = ${id} AND user_id = ${session?.user?.id}`;
     revalidatePath('/home');
     return { message: 'Deleted List.' };
   } catch (error) {
@@ -84,6 +87,8 @@ export async function deleteList(id: string) {
 
 const UpdateList = FormSchema.omit({ userId: true });
 export async function updateList(id: string, prevState: State, formData: FormData) {
+
+  const session = await auth()
 
   const validatedFields = CreateList.safeParse({
     name: formData.get('listName'),
@@ -102,7 +107,8 @@ export async function updateList(id: string, prevState: State, formData: FormDat
     await sql`
         UPDATE tout_doux_lists
         SET name = ${name}
-        WHERE id = ${id}
+        WHERE id = ${id} 
+          AND user_id = ${session?.user?.id}
       `;
   } catch (error) {
     return { message: 'Database Error: Failed to Update Invoice.' };
