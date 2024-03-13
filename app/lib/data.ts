@@ -5,6 +5,7 @@ import {
   List,
   ListsTable,
   ListForm,
+  TodosTable,
 } from './definitions';
 import { unstable_noStore as noStore } from 'next/cache';
 import { auth } from '@/auth';
@@ -53,7 +54,7 @@ export async function fetchListsPages(query: string) {
     return totalPages;
   } catch (error) {
     console.error('Database Error:', error);
-    throw new Error('Failed to fetch total number of invoices.');
+    throw new Error('Failed to fetch total number of lists.');
   }
 }
 
@@ -76,6 +77,76 @@ export async function fetchListById(id: string) {
   }
 }
 
+
+export async function fetchFilteredTodos(
+  query: string,
+  currentPage: number,
+  list_id: string
+) {
+  noStore();
+  const session = await auth()
+
+  const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+
+  try {
+    const todos = await sql<TodosTable>`
+      SELECT
+        todos.id,
+        todos.name
+      FROM tout_doux_todos AS todos
+      JOIN tout_doux_lists AS lists ON todos.list_id = lists.id
+      WHERE todos.name ILIKE ${`%${query}%`}
+        AND lists.id = ${`${list_id}`}::uuid
+        AND lists.user_id = ${`${session?.user?.id}`}::uuid
+      LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
+    `;
+    return todos.rows;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch todos.');
+  }
+}
+
+
+export async function fetchTodosPages(query: string, list_id: string) {
+  noStore();
+  const session = await auth()
+  try {
+    const count = await sql`SELECT COUNT(*)
+    FROM tout_doux_todos AS todos
+    JOIN tout_doux_lists AS lists ON todos.list_id = lists.id
+    WHERE todos.name ILIKE ${`%${query}%`}
+        AND lists.id = ${`${list_id}`}::uuid
+        AND lists.user_id = ${`${session?.user?.id}`}::uuid
+  `;
+
+    const totalPages = Math.ceil(Number(count.rows[0].count) / ITEMS_PER_PAGE);
+    return totalPages;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch total number of todos.');
+  }
+}
+
+export async function fetchTodoById(id: string) {
+  noStore();
+  const session = await auth()
+  try {
+    const lists = await sql<TodosTable>`
+      SELECT
+        todos.id,
+        todos.name
+      FROM tout_doux_todos AS todos
+      JOIN tout_doux_lists AS lists ON todos.list_id = lists.id
+      WHERE todos.id = ${id}
+        AND lists.user_id = ${`${session?.user?.id}`}::uuid
+    `;
+    return lists.rows[0];
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch todos.');
+  }
+}
 
 export async function getUser(name: string): Promise<User | undefined> {
   console.log("getUser")

@@ -90,7 +90,7 @@ export async function updateList(id: string, prevState: State, formData: FormDat
 
   const session = await auth()
 
-  const validatedFields = CreateList.safeParse({
+  const validatedFields = UpdateList.safeParse({
     name: formData.get('listName'),
   });
 
@@ -116,4 +116,66 @@ export async function updateList(id: string, prevState: State, formData: FormDat
  
   revalidatePath('/home');
   redirect('/home');
+}
+
+export async function deleteTodo(id: string, listId: string) {
+  try {
+    await sql`DELETE FROM tout_doux_todos WHERE id = ${id} AND list_id = ${listId}`;
+    revalidatePath(`/lists/${listId}/edit`);
+  } catch (error) {
+    return { message: 'Database Error: Failed to Delete Todo.' };
+  }
+  revalidatePath(`/lists/${listId}/edit`);
+}
+
+const UpsertTodo = FormSchema.omit({ userId: true });
+export async function upsertTodo(
+  id: string | undefined,
+  listId: string,
+  prevState: State,
+  formData: FormData
+) {
+  const session = await auth()
+
+  const validatedFields = UpsertTodo.safeParse({
+    name: formData.get('todoName'),
+  });
+
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: 'Missing Fields. Failed to save todo.',
+    };
+  }
+
+  const { name } = validatedFields.data;
+
+  if (id) {
+    try {
+      await sql`
+            UPDATE tout_doux_todos AS todos
+            SET name = ${name}
+            FROM tout_doux_lists AS lists
+            WHERE todos.list_id = lists.id
+              AND todos.id = ${id}
+              AND lists.user_id = ${session?.user?.id}
+          `;
+    } catch (error) {
+      console.log(error)
+      return { message: 'Database Error: Failed to Update Todo.' };
+    }
+  }
+  else {
+    try {
+      await sql`
+          INSERT INTO tout_doux_todos (name, list_id)
+          VALUES (${name}, ${listId})
+        `;
+    } catch (error) {
+      console.log(error)
+      return { message: 'Database Error: Failed to Insert Todo.' };
+    }
+  }
+  revalidatePath(`/lists/${listId}/edit`);
+  redirect(`/lists/${listId}/edit`);
 }
