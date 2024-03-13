@@ -25,3 +25,8 @@ export type ListForm = {
   id: string;
   name: number;
 };
+
+export type TodosTable = {
+  id: string;
+  name: string;
+};
