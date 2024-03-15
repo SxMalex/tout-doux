@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation';
 import Table from '@/app/ui/todos/table';
 import Search from '@/app/ui/search';
 import { Suspense } from 'react';
-import { ListsTableSkeleton } from '@/app/ui/skeletons';
+import { TodoTableSkeleton } from '@/app/ui/skeletons';
 import { Metadata } from 'next';
 import { fetchTodosPages } from '@/app/lib/data';
 import Pagination from '@/app/ui/lists/pagination';
@@ -46,7 +46,7 @@ export default async function Page({
         <div className="m-4 flex items-center justify-between gap-2 ">
           <TodoForm todo={null} listId={list.id} insert={true}/>
         </div>
-        <Suspense key={query + currentPage} fallback={<ListsTableSkeleton />}>
+        <Suspense key={query + currentPage} fallback={<TodoTableSkeleton />}>
           <Table query={query} currentPage={currentPage} listId={id}/>
         </Suspense>
         <div className="mt-5 flex w-full justify-center">

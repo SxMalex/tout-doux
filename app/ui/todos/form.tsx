@@ -20,6 +20,8 @@ export default function Form({
   const initialState = { message: "", errors: {} };
   const upsertTodoWithId = upsertTodo.bind(null, todo?.id, listId);
   const [state, dispatch] = useFormState(upsertTodoWithId, initialState);
+
+
   return (
     <form action={dispatch} className="w-full">
       <div className="flex justify-between items-center">
