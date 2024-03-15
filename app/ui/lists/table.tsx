@@ -18,8 +18,8 @@ export default async function ListsTable({
             {
               lists?.map(
                 (list) => (
-                  <div key={list.id} className="flex  justify-between items-center mb-2 w-full bg-white p-4 hover:shadow-lg">
-                    <div className="flex items-center justify-between pb-4">
+                  <div key={list.id} className="flex justify-between items-center mb-2 w-full bg-white p-4 hover:shadow-lg">
+                    <div className="flex items-center justify-between">
                       <div>
                         <div className="mb-2 flex items-center">
                           <p>{list.name}</p>
@@ -27,7 +27,7 @@ export default async function ListsTable({
                       </div>
                     </div>
 
-                    <div className="flex items-center justify-between pt-4">
+                    <div className="flex items-center justify-between">
                       <div className="flex justify-end gap-2">
                         <UpdateList id={list.id} />
                         <DeleteList id={list.id} />

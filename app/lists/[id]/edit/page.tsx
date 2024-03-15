@@ -37,13 +37,15 @@ export default async function Page({
   const totalPages = await fetchTodosPages(query, id);
 
   return (
-    <main>
+    <main className="max-w-md mx-auto">
       <ListForm list={list}/>
       <div className="w-full">
-        <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
+        <div className="m-4 flex items-center justify-between gap-2 ">
           <Search placeholder="Search todos..." />
         </div>
-        <TodoForm todo={null} listId={list.id}/>
+        <div className="m-4 flex items-center justify-between gap-2 ">
+          <TodoForm todo={null} listId={list.id} insert={true}/>
+        </div>
         <Suspense key={query + currentPage} fallback={<ListsTableSkeleton />}>
           <Table query={query} currentPage={currentPage} listId={id}/>
         </Suspense>

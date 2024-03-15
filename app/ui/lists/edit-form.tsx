@@ -22,9 +22,7 @@ export default function EditListForm({
   const [state, dispatch] = useFormState(updateListWithId, initialState);
   return (
     <form action={dispatch}>
-      <div className="rounded-md bg-gray-50 p-4 md:p-6">
-
-        <div className="mb-4">
+      <div className="rounded-md p-4">
           <label htmlFor="listName" className="mb-2 block text-sm font-medium">
             Comment se nomme votre liste ? 
           </label>
@@ -42,7 +40,6 @@ export default function EditListForm({
               />
               <CurrencyDollarIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
             </div>
-          </div>
           <div id="list-error" aria-live="polite" aria-atomic="true">
             {state.errors?.name &&
               state.errors.name.map((error: string) => (
@@ -58,14 +55,14 @@ export default function EditListForm({
           </p>
         </div>
       </div>
-      <div className="mt-6 flex justify-end gap-4">
+      <div className="flex justify-end gap-4">
         <Link
           href="/home"
           className="flex h-10 items-center rounded-lg bg-gray-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200"
         >
-          Cancel
+          Retour
         </Link>
-        <Button type="submit">Edit List</Button>
+        <Button type="submit">&#201;diter</Button>
       </div>
     </form>
   );
