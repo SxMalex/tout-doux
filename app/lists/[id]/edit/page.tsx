@@ -1,4 +1,4 @@
-import ListForm from '@/app/ui/lists/edit-form';
+import ListForm from '@/app/ui/lists/form';
 import TodoForm from '@/app/ui/todos/form';
 import { fetchListById } from '@/app/lib/data';
 import { notFound } from 'next/navigation';

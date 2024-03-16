@@ -4,23 +4,20 @@ import Link from 'next/link';
 import { ListForm } from '@/app/lib/definitions';
 import { QueueListIcon } from '@heroicons/react/24/outline';
 import { Button } from '@/app/ui/button';
-import { updateList } from '@/app/lib/actions';
+import { upsertList } from '@/app/lib/actions';
 import { useFormState } from 'react-dom';
 
 export default function EditListForm({
   list,
 }: {
-  list: ListForm;
+  list: ListForm | null;
 }) {
   const initialState = { message: "", errors: {} };
-  const updateListWithId = updateList.bind(null, list.id);
+  const updateListWithId = upsertList.bind(null, list?.id);
   const [state, dispatch] = useFormState(updateListWithId, initialState);
   return (
     <form action={dispatch}>
       <div className="rounded-md p-4">
-          <label htmlFor="listName" className="mb-2 block text-sm font-medium">
-            Comment se nomme votre liste ? 
-          </label>
           <div className="relative mt-2 rounded-md">
             <div className="relative">
               <input
@@ -30,7 +27,7 @@ export default function EditListForm({
                 placeholder="Nom de liste"
                 className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                 aria-describedby="list-error"
-                defaultValue={list.name}
+                defaultValue={list?.name}
                 required
               />
               <QueueListIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
@@ -57,7 +54,7 @@ export default function EditListForm({
         >
           Retour
         </Link>
-        <Button type="submit">&#201;diter</Button>
+        <Button type="submit">Sauver</Button>
       </div>
     </form>
   );

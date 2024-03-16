@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import { TodosTable } from '@/app/lib/definitions';
-import { CurrencyDollarIcon } from '@heroicons/react/24/outline';
 import { Button } from '@/app/ui/button';
 import { upsertTodo } from '@/app/lib/actions';
 import { useFormState } from 'react-dom';

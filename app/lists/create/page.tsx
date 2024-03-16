@@ -1,4 +1,4 @@
-import Form from '@/app/ui/lists/create-form';
+import Form from '@/app/ui/lists/form';
 
 import { Metadata } from 'next';
  
@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 export default async function Page() {
   return (
     <main>
-      <Form/>
+      <Form list={null}/>
     </main>
   );
 }

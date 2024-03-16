@@ -40,36 +40,7 @@ export type State = {
 };
 
 const CreateList = FormSchema.omit({ userId: true });
-export async function createList(prevState: State, formData: FormData) {
 
-  const session = await auth()
-
-  const validatedFields = CreateList.safeParse({
-    name: formData.get('listName')
-  });
-
-  if (!validatedFields.success) {
-    return {
-      errors: validatedFields.error.flatten().fieldErrors,
-      message: 'Missing Fields. Failed to Create List.',
-    };
-  }
-
-  const { name } = validatedFields.data;
-
-  try {
-    await sql`
-      INSERT INTO tout_doux_lists (name, user_id)
-      VALUES (${name}, ${session?.user?.id})
-    `;
-  } catch (error) {
-    return {
-      message: 'Database Error: Failed to Create List.',
-    };
-  }
-  revalidatePath('/home');
-  redirect('/home');
-}
 
 export async function deleteList(id: string) {
   
@@ -86,7 +57,13 @@ export async function deleteList(id: string) {
 }
 
 const UpdateList = FormSchema.omit({ userId: true });
-export async function updateList(id: string, prevState: State, formData: FormData) {
+
+
+export async function upsertList(
+  id: string | undefined,
+  prevState: State,
+  formData: FormData
+) {
 
   const session = await auth()
 
@@ -97,21 +74,35 @@ export async function updateList(id: string, prevState: State, formData: FormDat
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
-      message: 'Missing Fields. Failed to Uptate Invoice.',
+      message: 'Missing Fields. Failed to save List.',
     };
   }
 
   const { name } = validatedFields.data;
-  
-  try {
-    await sql`
+
+  if (id) {
+    try {
+      await sql`
         UPDATE tout_doux_lists
         SET name = ${name}
         WHERE id = ${id} 
           AND user_id = ${session?.user?.id}
+        `;
+    } catch (error) {
+      console.log(error)
+      return { message: 'Database Error: Failed to Update List.' };
+    }
+  }
+  else {
+    try {
+      await sql`
+        INSERT INTO tout_doux_lists (name, user_id)
+        VALUES (${name}, ${session?.user?.id})
       `;
-  } catch (error) {
-    return { message: 'Database Error: Failed to Update Invoice.' };
+    } catch (error) {
+      console.log(error)
+      return { message: 'Database Error: Failed to Insert List.' };
+    }
   }
  
   revalidatePath('/home');
