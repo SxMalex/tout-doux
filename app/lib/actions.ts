@@ -7,9 +7,14 @@ import { signIn } from '@/auth';
 import { AuthError } from 'next-auth';
 import { auth } from '@/auth';
 
-const FormSchema = z.object({
+const listFormSchema = z.object({
   name: z.string(),
-  userId: z.string(),
+  // userId: z.string(),
+});
+
+const todoFormSchema = z.object({
+  name: z.string(),
+  // listId: z.string(),
 });
 
 export async function authenticate(
@@ -39,8 +44,6 @@ export type State = {
   message?: string | null;
 };
 
-const CreateList = FormSchema.omit({ userId: true });
-
 
 export async function deleteList(id: string) {
   
@@ -56,9 +59,6 @@ export async function deleteList(id: string) {
   revalidatePath('/home');
 }
 
-const UpdateList = FormSchema.omit({ userId: true });
-
-
 export async function upsertList(
   id: string | undefined,
   prevState: State,
@@ -67,7 +67,7 @@ export async function upsertList(
 
   const session = await auth()
 
-  const validatedFields = UpdateList.safeParse({
+  const validatedFields = listFormSchema.safeParse({
     name: formData.get('listName'),
   });
 
@@ -119,7 +119,6 @@ export async function deleteTodo(id: string, listId: string) {
   revalidatePath(`/lists/${listId}/edit`);
 }
 
-const UpsertTodo = FormSchema.omit({ userId: true });
 export async function upsertTodo(
   id: string | undefined,
   listId: string,
@@ -128,7 +127,7 @@ export async function upsertTodo(
 ) {
   const session = await auth()
 
-  const validatedFields = UpsertTodo.safeParse({
+  const validatedFields = todoFormSchema.safeParse({
     name: formData.get('todoName'),
   });
 
