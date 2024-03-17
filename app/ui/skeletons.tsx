@@ -31,7 +31,7 @@ export function TodoFormSkeleton(){
 }
 
 export function TodoTableSkeleton() {
-  let forms = [];
+  let forms: JSX.Element[] = [];
 
   [...Array(6)].forEach((_, index) => {
     forms.push(<Fragment key={index}><TodoFormSkeleton /></Fragment>)
@@ -76,7 +76,7 @@ export function ListsCardSkeleton() {
 
 export function ListsTableSkeleton() {
 
-  let cards = [];
+  let cards: JSX.Element[] = [];
 
   [...Array(6)].forEach((_, index) => {
     cards.push(<Fragment key={index}><ListsCardSkeleton /></Fragment>)
@@ -92,25 +92,3 @@ export function ListsTableSkeleton() {
     </div>
   );
 }
-
-
-import React from "react";
-
-function App() {
-  const seasons = ["Spring", "Summer", "Autumn", "Winter"];
-
-  let seasonsList = [];
-
-  seasons.forEach((season, index) => {
-    seasonsList.push(<li key={index}>{season}</li>);
-  });
-
-  return (
-    <div>
-      <h2>Seasons of the year</h2>
-      <ul>{seasonsList}</ul>
-    </div>
-  );
-}
-
-export default App;
