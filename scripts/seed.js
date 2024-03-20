@@ -54,6 +54,7 @@ async function seedLists(client) {
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     user_id UUID NOT NULL
+    CONSTRAINT "user_id" FOREIGN KEY ("user_id") REFERENCES "tout_doux_users" ("id") ON UPDATE NO ACTION ON DELETE NO ACTION
   );
 `;
 
@@ -92,6 +93,7 @@ async function seedTodos(client) {
         id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
         name VARCHAR(255) NOT NULL,
         list_id UUID NOT NULL
+        CONSTRAINT "list_id" FOREIGN KEY ("list_id") REFERENCES "tout_doux_lists" ("id") ON UPDATE NO ACTION ON DELETE NO ACTION
       );
     `;
 
