@@ -3,9 +3,8 @@ import { z } from 'zod';
 import { sql } from '@vercel/postgres';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { signIn } from '@/auth';
+import { signIn, signOut, auth } from '@/auth';
 import { AuthError } from 'next-auth';
-import { auth } from '@/auth';
 
 const listFormSchema = z.object({
   name: z.string(),
@@ -34,6 +33,10 @@ export async function authenticate(
     }
     throw error;
   }
+}
+
+export async function logout(){
+  await signOut();
 }
 
 // This is temporary until @types/react-dom is updated
