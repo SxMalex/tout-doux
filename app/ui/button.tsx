@@ -1,4 +1,6 @@
 import clsx from 'clsx';
+import { PowerIcon } from '@heroicons/react/24/outline';
+import { logout } from '@/app/lib/actions';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
@@ -16,4 +18,14 @@ export function Button({ children, className, ...rest }: ButtonProps) {
       {children}
     </button>
   );
+}
+
+export function ButtonLogOut(){
+  return(
+    <form action={async () => { await logout();}}>
+      <button className="p-3 hover:text-red-600">
+        <PowerIcon className="w-6" />
+      </button>
+    </form>
+  )
 }
