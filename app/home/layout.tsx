@@ -1,9 +1,9 @@
-import Nav from '@/app/ui/nav/nav';
+import Navbar from '@/app/ui/nav/navbar';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div>
-        <Nav />
+        <Navbar />
         {children}
     </div>
   );
