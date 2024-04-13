@@ -23,7 +23,7 @@ export default async function Page({
   const currentPage = Number(searchParams?.page) || 1;
   const totalPages = await fetchListsPages(query);
   return (
-    <div className="max-w-md mx-auto bg-white shadow-lg overflow-hidden mt-16">
+    <div className="max-w-md mx-auto bg-white shadow-lg overflow-hidden mt-8">
       <div className="mt-4 flex items-center justify-between gap-2 md:mt-8 px-4">
         <Search placeholder="Search lists..." />
         <CreateList />
