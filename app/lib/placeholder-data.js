@@ -50,6 +50,8 @@ const todos = [
 
 module.exports = {
   users,
+  listStatus,
   lists,
+  todoStatus,
   todos,
 };

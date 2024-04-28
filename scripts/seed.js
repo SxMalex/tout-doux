@@ -1,9 +1,9 @@
 const { db } = require('@vercel/postgres');
 const {
   users,
-  listStatus
+  listStatus,
   lists,
-  todoStatus
+  todoStatus,
   todos,
 } = require('../app/lib/placeholder-data.js');
 const bcrypt = require('bcrypt');
