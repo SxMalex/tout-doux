@@ -11,6 +11,10 @@ const users = [
   },
 ];
 
+const listStatus = [
+  {name: 'private'},
+  {name: 'public'},
+]
 
 const lists = [
   {
@@ -29,6 +33,12 @@ const lists = [
     user_id: users[1].id,
   },
 ];
+
+const todoStatus = [
+  {name: 'todo'},
+  {name: 'in progress'},
+  {name: 'done'},
+]
 
 const todos = [
   { name: 'faire un truc', list_id: lists[0].id },
