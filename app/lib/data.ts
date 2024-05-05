@@ -11,6 +11,7 @@ import { unstable_noStore as noStore } from 'next/cache';
 import { auth } from '@/auth';
 
 const ITEMS_PER_PAGE = 6;
+const prefix = process.env.POSTGRES_PREFIX
 
 export async function fetchFilteredLists(
   query: string,

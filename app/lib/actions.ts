@@ -99,8 +99,12 @@ export async function upsertList(
   else {
     try {
       await sql`
-        INSERT INTO tout_doux_lists (name, user_id)
-        VALUES (${name}, ${session?.user?.id})
+        INSERT INTO tout_doux_lists (name, user_id, list_status_id)
+        VALUES (
+          ${name},
+          ${session?.user?.id},
+          (SELECT id FROM tout_doux_list_status WHERE name = 'private')
+        )
       `;
     } catch (error) {
       console.log(error)
@@ -161,9 +165,13 @@ export async function upsertTodo(
   else {
     try {
       await sql`
-          INSERT INTO tout_doux_todos (name, list_id)
-          VALUES (${name}, ${listId})
-        `;
+          INSERT INTO tout_doux_todos (name, list_id, todo_status_id)
+          VALUES (
+            ${name},
+            ${listId},
+            (SELECT id FROM tout_doux_todo_status WHERE name = 'todo')
+          )
+      `;
     } catch (error) {
       console.log(error)
       return { message: 'Database Error: Failed to Insert Todo.' };
