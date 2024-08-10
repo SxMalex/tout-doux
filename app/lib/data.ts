@@ -150,12 +150,62 @@ export async function fetchTodoById(id: string) {
 }
 
 export async function getUser(name: string): Promise<User | undefined> {
-  console.log("getUser")
   try {
     const user = await sql<User>`SELECT * FROM tout_doux_users WHERE name=${name}`;
     return user.rows[0];
   } catch (error) {
     console.error('Failed to fetch user:', error);
     throw new Error('Failed to fetch user.');
+  }
+}
+
+export async function getUserByPublicList() {
+  try {
+    const users = await sql`
+      SELECT 
+        DISTINCT(users.name), users.id
+      FROM tout_doux_users AS users
+      JOIN tout_doux_lists AS lists ON users.id = lists.user_id
+      JOIN tout_doux_list_status AS list_status ON lists.list_status_id = list_status.id
+      WHERE list_status.name = 'public'
+    `;
+    return users.rows
+  } catch (error) {
+    console.error('Failed to get user by public list')
+    throw new Error('Failed to get user by public list')
+  }
+}
+
+export async function getPublicListByUserId(user_id: string) {
+  try {
+    const lists = await sql`
+      SELECT 
+        lists.name, lists.id
+      FROM tout_doux_lists AS lists
+      JOIN tout_doux_users AS users ON users.id = lists.user_id
+      JOIN tout_doux_list_status AS list_status ON lists.list_status_id = list_status.id
+      WHERE list_status.name = 'public' AND users.id = ${`${user_id}`}::uuid
+    `;
+    return lists.rows
+  } catch (error) {
+    console.error('Failed to get public lists by user id')
+    throw new Error('Failed to get public lists by user id')
+  }
+}
+
+export async function getPublicTodoByListId(list_id: string) {
+  try {
+    const todos = await sql`
+      SELECT 
+        todos.name, todos.id
+      FROM tout_doux_todos AS todos
+      JOIN tout_doux_lists AS lists ON todos.list_id = lists.id
+      JOIN tout_doux_list_status AS list_status ON lists.list_status_id = list_status.id
+      WHERE list_status.name = 'public' AND lists.id = ${`${list_id}`}::uuid
+    `;
+    return todos.rows
+  } catch (error) {
+    console.error('Failed to get public todos by list id')
+    throw new Error('Failed to get public todos by list id')
   }
 }

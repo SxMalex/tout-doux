@@ -4,13 +4,18 @@ import Image from "next/image";
 import Link from 'next/link';
 import { Fragment } from 'react';
 import { ButtonLogOut } from '@/app/ui/button';
-import { HomeIcon } from '@heroicons/react/24/outline';
+import { HomeIcon, UserGroupIcon } from '@heroicons/react/24/outline';
 
 const links = [
     {
       id: 1,
       link: "/home",
       display: <button className="p-3 hover:text-gray-600"><HomeIcon className="w-6" /></button>,
+    },
+    {
+      id: 2,
+      link: "/public",
+      display: <button className="p-3 hover:text-gray-600"><UserGroupIcon className="w-6" /></button>,
     },
 ];
 
