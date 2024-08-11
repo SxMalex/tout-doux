@@ -10,12 +10,14 @@ const links = [
     {
       id: 1,
       link: "/home",
+      title: "home",
       display: <button className="p-3 hover:text-gray-600"><HomeIcon className="w-6" /></button>,
       private: true,
     },
     {
       id: 2,
       link: "/public",
+      title: "public",
       display: <button className="p-3 hover:text-gray-600"><UserGroupIcon className="w-6" /></button>,
       private: false,
     },
@@ -33,7 +35,7 @@ function MobileNav({open, setOpen}: {open: boolean, setOpen: Function}) {
                     href={link.link}
                     onClick={() => setTimeout(() => {setOpen(!open)}, 100)}
                 >
-                    {link.display}
+                    {link.display}{link.title}
                 </Link>
             </Fragment>
         )
@@ -61,7 +63,7 @@ export default function Navbar() {
         desktopLinks.push(
             <Fragment key={link.id}>
                 <Link href={link.link} className={`mx-4`}>
-                    {link.display}
+                    {link.display}{link.title}
                 </Link>
             </Fragment>
         )
