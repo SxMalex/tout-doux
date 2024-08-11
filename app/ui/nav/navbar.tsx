@@ -11,11 +11,13 @@ const links = [
       id: 1,
       link: "/home",
       display: <button className="p-3 hover:text-gray-600"><HomeIcon className="w-6" /></button>,
+      private: true,
     },
     {
       id: 2,
       link: "/public",
       display: <button className="p-3 hover:text-gray-600"><UserGroupIcon className="w-6" /></button>,
+      private: false,
     },
 ];
 
@@ -28,7 +30,7 @@ function MobileNav({open, setOpen}: {open: boolean, setOpen: Function}) {
             <Fragment key={link.id}>
                 <Link 
                     className="text-xl font-medium my-4" 
-                    href="{link.link}" 
+                    href={link.link}
                     onClick={() => setTimeout(() => {setOpen(!open)}, 100)}
                 >
                     {link.display}

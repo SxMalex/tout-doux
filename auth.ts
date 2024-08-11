@@ -25,7 +25,4 @@ export const { auth, signIn, signOut } = NextAuth({
         return null;
       },
   })],
-  session: {
-    jwt: true,
-  },
 });
