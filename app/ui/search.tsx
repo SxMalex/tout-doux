@@ -35,6 +35,8 @@ export default function Search({ placeholder }: { placeholder: string }) {
           handleSearch(e.target.value);
         }}
         defaultValue={searchParams.get('query')?.toString()}
+        name="search"
+        id="search"
       />
     </div>
   );

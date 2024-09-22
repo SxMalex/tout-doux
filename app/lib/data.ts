@@ -66,8 +66,10 @@ export async function fetchListById(id: string) {
     const lists = await sql<ListForm>`
       SELECT
         lists.id,
-        lists.name
+        lists.name,
+        status.name AS status
       FROM tout_doux_lists AS lists
+      JOIN tout_doux_list_status AS status ON lists.list_status_id = status.id
       WHERE lists.id = ${id}
         AND lists.user_id = ${`${session?.user?.id}`}::uuid
     `;

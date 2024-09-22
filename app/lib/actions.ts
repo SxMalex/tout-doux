@@ -62,6 +62,28 @@ export async function deleteList(id: string) {
   revalidatePath('/home');
 }
 
+
+export async function updateListStatus({
+  id,
+  status,
+}: {
+  id: string | undefined;
+  status: string;
+}) {
+  try {
+    await sql`
+      UPDATE tout_doux_lists
+      SET list_status_id = list_status.id
+      FROM tout_doux_list_status AS list_status
+      WHERE list_status.name =  ${status}
+        AND tout_doux_lists.id = ${id}::uuid 
+      `;
+  } catch (error) {
+    console.log(error)
+    return { message: 'Database Error: Failed to Update Status List.' };
+  }
+}
+
 export async function upsertList(
   id: string | undefined,
   prevState: State,

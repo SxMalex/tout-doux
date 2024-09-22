@@ -26,7 +26,6 @@ export default async function ListsTable({
                         </div>
                       </div>
                     </div>
-
                     <div className="flex items-center justify-between">
                       <div className="flex justify-end gap-2">
                         <UpdateList id={list.id} />

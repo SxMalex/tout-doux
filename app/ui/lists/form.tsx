@@ -2,10 +2,11 @@
 
 import Link from 'next/link';
 import { ListForm } from '@/app/lib/definitions';
-import { QueueListIcon } from '@heroicons/react/24/outline';
+import { QueueListIcon, EyeSlashIcon, EyeIcon } from '@heroicons/react/24/outline';
 import { Button } from '@/app/ui/button';
-import { upsertList } from '@/app/lib/actions';
+import { upsertList, updateListStatus } from '@/app/lib/actions';
 import { useFormState } from 'react-dom';
+import { useState } from 'react';
 
 export default function EditListForm({
   list,
@@ -15,6 +16,17 @@ export default function EditListForm({
   const initialState = { message: "", errors: {} };
   const updateListWithId = upsertList.bind(null, list?.id);
   const [state, dispatch] = useFormState(updateListWithId, initialState);
+
+  const [isPublic, setIsPublic] = useState(list?.status === "public");
+
+  const handleToggleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    setIsPublic(e.target.checked);
+    await updateListStatus({
+      id: list?.id,
+      status: e.target.checked ? 'public' : 'private',
+    });
+  };
+
   return (
     <form action={dispatch}>
       <div className="rounded-md p-4">
@@ -48,6 +60,20 @@ export default function EditListForm({
         </div>
       </div>
       <div className="flex justify-end gap-4">
+        <div className="flex items-center justify-evenly w-full">
+          <div><EyeSlashIcon className="w-5 pointer-events-none text-gray-500 peer-focus:text-gray-900" /></div>
+          <label htmlFor="listStatus" className="flex items-center cursor-pointer">
+            <input 
+              type="checkbox" 
+              id="listStatus" 
+              className="sr-only peer"
+              checked={isPublic}
+              onChange={handleToggleChange}
+            />
+            <div className="block relative bg-blue-900 w-16 h-9 p-1 rounded-full before:absolute before:bg-blue-600 before:w-7 before:h-7 before:p-1 before:rounded-full before:transition-all before:duration-500 before:left-1 peer-checked:before:left-8 peer-checked:before:bg-white"></div>
+          </label>
+          <div><EyeIcon className="w-5 pointer-events-none text-gray-500 peer-focus:text-gray-900" /></div>
+        </div>
         <Link
           href="/home"
           className="flex h-10 items-center rounded-lg bg-gray-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200"

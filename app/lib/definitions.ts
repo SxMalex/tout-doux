@@ -24,6 +24,7 @@ export type ListsTable = {
 export type ListForm = {
   id: string;
   name: number;
+  status: string;
 };
 
 export type TodosTable = {
