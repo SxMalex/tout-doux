@@ -162,6 +162,7 @@ export async function getUser(name: string): Promise<User | undefined> {
 }
 
 export async function getUserByPublicList() {
+  noStore();
   try {
     const users = await sql`
       SELECT 
@@ -179,6 +180,7 @@ export async function getUserByPublicList() {
 }
 
 export async function getPublicListByUserId(user_id: string) {
+  noStore();
   try {
     const lists = await sql`
       SELECT 
@@ -196,6 +198,7 @@ export async function getPublicListByUserId(user_id: string) {
 }
 
 export async function getPublicTodoByListId(list_id: string) {
+  noStore();
   try {
     const todos = await sql`
       SELECT 
