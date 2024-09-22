@@ -70,7 +70,13 @@ export default function EditListForm({
               checked={isPublic}
               onChange={handleToggleChange}
             />
-            <div className="block relative bg-blue-900 w-16 h-9 p-1 rounded-full before:absolute before:bg-blue-600 before:w-7 before:h-7 before:p-1 before:rounded-full before:transition-all before:duration-500 before:left-1 peer-checked:before:left-8 peer-checked:before:bg-white"></div>
+            <div className="block bg-blue-900 w-16 h-9 p-1 rounded-full">
+              <div
+                className={`bg-blue-600 w-7 h-7 rounded-full transition-all duration-500 ${
+                  isPublic ? 'translate-x-7 bg-white' : ''
+                }`}
+              ></div>
+            </div>
           </label>
           <div><EyeIcon className="w-5 pointer-events-none text-gray-500 peer-focus:text-gray-900" /></div>
         </div>
