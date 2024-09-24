@@ -84,6 +84,19 @@ export async function updateListStatus({
   }
 }
 
+export async function insertList(listName: string){
+  const session = await auth()
+  await sql`
+    INSERT INTO tout_doux_lists (name, user_id, list_status_id)
+    VALUES (
+      ${listName},
+      ${session?.user?.id},
+      (SELECT id FROM tout_doux_list_status WHERE name = 'private')
+    )
+  `;
+  revalidatePath('/home');
+}
+
 export async function upsertList(
   id: string | undefined,
   prevState: State,

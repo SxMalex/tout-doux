@@ -1,15 +1,27 @@
+'use client';
 import { PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
-import { deleteList } from '@/app/lib/actions';
+import { insertList, deleteList } from '@/app/lib/actions';
 
-export function CreateList() {
+export function CreateListButton() {
+
+  const createList = async () => {
+    const listName = (document.getElementById('search') as HTMLInputElement)?.value;
+    if (!listName) {
+      return;
+    }
+    await insertList(listName);
+  }
+
   return (
-    <Link
-      href="/lists/create"
-      className="flex h-10 items-center rounded-lg bg-blue-500 px-4 text-sm font-medium text-white transition-colors hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
-    >
-      <PlusIcon className="h-5" />
-    </Link>
+    <div>
+      <button
+        onClick={createList}
+        className="flex h-10 items-center rounded-lg bg-blue-500 px-4 text-sm font-medium text-white transition-colors hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+      >
+        <PlusIcon className="h-5" />
+      </button>
+    </div>
   );
 }
 

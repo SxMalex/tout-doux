@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import Pagination from '@/app/ui/lists/pagination';
 import Search from '@/app/ui/search';
 import Table from '@/app/ui/lists/table';
-import { CreateList } from '@/app/ui/lists/buttons';
+import { CreateListButton } from '@/app/ui/lists/buttons';
 import { ListsTableSkeleton } from '@/app/ui/skeletons';
 import { Suspense } from 'react';
 import { fetchListsPages } from '@/app/lib/data';
@@ -25,8 +25,8 @@ export default async function Page({
   return (
     <div className="max-w-md mx-auto bg-white shadow-lg overflow-hidden mt-8">
       <div className="mt-4 flex items-center justify-between gap-2 md:mt-8 px-4">
-        <Search placeholder="Search lists..." />
-        <CreateList />
+        <Search placeholder="Search and create lists..." />
+        <CreateListButton />
       </div>
       <Suspense key={query + currentPage} fallback={<ListsTableSkeleton />}>
         <Table query={query} currentPage={currentPage} />
