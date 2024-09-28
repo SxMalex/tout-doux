@@ -51,7 +51,7 @@ export default function EditListForm({ list }: { list: ListForm }) {
           <div>
             <EyeSlashIcon
               className={`w-5 pointer-events-none transition-colors duration-500 ${
-                !isPublic ? 'text-blue-900' : 'text-gray-500'
+                !isPublic ? 'text-gray-900' : 'text-gray-500'
               }`}
             />
           </div>
@@ -74,7 +74,7 @@ export default function EditListForm({ list }: { list: ListForm }) {
           <div>
             <EyeIcon
               className={`w-5 pointer-events-none transition-colors duration-500 ${
-                isPublic ? 'text-blue-900' : 'text-gray-500'
+                isPublic ? 'text-gray-900' : 'text-gray-500'
               }`}
             />
           </div>
