@@ -13,7 +13,7 @@ export default function EditListForm({list}: {list: ListForm }) {
   const handleToggleChange = useDebouncedCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsPublic(e.target.checked);
     await updateListStatus({
-      id: list?.id,
+      id: list.id,
       status: e.target.checked ? 'public' : 'private',
     });
   }, 300);
@@ -21,7 +21,7 @@ export default function EditListForm({list}: {list: ListForm }) {
   const handleListUpdateName = useDebouncedCallback(async (listName) => {
     if(listName){
       await updateListName({
-        id: list?.id,
+        id: list.id,
         name: listName, 
      });
     }
@@ -37,11 +37,8 @@ export default function EditListForm({list}: {list: ListForm }) {
               id="listName"
               name="listName"
               type="text"
-              placeholder="Nom de liste"
               className="peer block w-full rounded-md py-2 px-2 text-sm outline-2 placeholder:text-gray-500"
-              aria-describedby="list-error"
-              defaultValue={list?.name}
-              required
+              defaultValue={list.name}
               onChange={(e) => {
                 handleListUpdateName(e.target.value);
               }}

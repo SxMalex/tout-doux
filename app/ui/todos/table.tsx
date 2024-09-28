@@ -20,7 +20,7 @@ export default async function TodosTable({
             todos?.map(
               (todo) => (
                 <div key={todo.id} className="flex justify-between mb-1 w-full bg-white p-2 hover:shadow-lg gap-2">
-                  <TodoForm todo={todo} listId={listId} insert={false}/>
+                  <TodoForm todo={todo} listId={listId}/>
                   <DeleteTodo id={todo.id} listId={listId}/>
                 </div>
               )

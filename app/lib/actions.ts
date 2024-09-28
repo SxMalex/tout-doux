@@ -129,57 +129,17 @@ export async function insertTodo(listId: string, todoName: string){
   revalidatePath(`/lists/${listId}/edit`);
 }
 
-export async function upsertTodo(
-  id: string | undefined,
-  listId: string,
-  prevState: State,
-  formData: FormData
-) {
-  const session = await auth()
 
-  const validatedFields = todoFormSchema.safeParse({
-    name: formData.get('todoName'),
-  });
-
-  if (!validatedFields.success) {
-    return {
-      errors: validatedFields.error.flatten().fieldErrors,
-      message: 'Missing Fields. Failed to save todo.',
-    };
-  }
-
-  const { name } = validatedFields.data;
-
-  if (id) {
-    try {
-      await sql`
-            UPDATE tout_doux_todos AS todos
-            SET name = ${name}
-            FROM tout_doux_lists AS lists
-            WHERE todos.list_id = lists.id
-              AND todos.id = ${id}
-              AND lists.user_id = ${session?.user?.id}
-          `;
-    } catch (error) {
-      console.log(error)
-      return { message: 'Database Error: Failed to Update Todo.' };
-    }
-  }
-  else {
-    try {
-      await sql`
-          INSERT INTO tout_doux_todos (name, list_id, todo_status_id)
-          VALUES (
-            ${name},
-            ${listId},
-            (SELECT id FROM tout_doux_todo_status WHERE name = 'todo')
-          )
+export async function updatetodoName({id, name,}: {id: string; name: string;}) {
+  try {
+    await sql`
+      UPDATE tout_doux_todos
+      SET name = ${name}
+      WHERE tout_doux_todos.id = ${id}::uuid 
       `;
-    } catch (error) {
-      console.log(error)
-      return { message: 'Database Error: Failed to Insert Todo.' };
-    }
+  } catch (error) {
+    console.log(error)
+    return { message: 'Database Error: Failed to Update Name Todo.' };
   }
-  revalidatePath(`/lists/${listId}/edit`);
-  redirect(`/lists/${listId}/edit`);
+  revalidatePath(`/lists/${id}/edit`);
 }
