@@ -63,13 +63,7 @@ export async function deleteList(id: string) {
 }
 
 
-export async function updateListStatus({
-  id,
-  status,
-}: {
-  id: string | undefined;
-  status: string;
-}) {
+export async function updateListStatus({id, status,}: {id: string; status: string;}) {
   try {
     await sql`
       UPDATE tout_doux_lists
@@ -82,6 +76,21 @@ export async function updateListStatus({
     console.log(error)
     return { message: 'Database Error: Failed to Update Status List.' };
   }
+  revalidatePath(`/lists/${id}/edit`);
+}
+
+export async function updateListName({id, name,}: {id: string; name: string;}) {
+  try {
+    await sql`
+      UPDATE tout_doux_lists
+      SET name = ${name}
+      WHERE tout_doux_lists.id = ${id}::uuid 
+      `;
+  } catch (error) {
+    console.log(error)
+    return { message: 'Database Error: Failed to Update Name List.' };
+  }
+  revalidatePath(`/lists/${id}/edit`);
 }
 
 export async function insertList(listName: string){
@@ -95,60 +104,6 @@ export async function insertList(listName: string){
     )
   `;
   revalidatePath('/home');
-}
-
-export async function upsertList(
-  id: string | undefined,
-  prevState: State,
-  formData: FormData
-) {
-
-  const session = await auth()
-
-  const validatedFields = listFormSchema.safeParse({
-    name: formData.get('listName'),
-  });
-
-  if (!validatedFields.success) {
-    return {
-      errors: validatedFields.error.flatten().fieldErrors,
-      message: 'Missing Fields. Failed to save List.',
-    };
-  }
-
-  const { name } = validatedFields.data;
-
-  if (id) {
-    try {
-      await sql`
-        UPDATE tout_doux_lists
-        SET name = ${name}
-        WHERE id = ${id} 
-          AND user_id = ${session?.user?.id}
-        `;
-    } catch (error) {
-      console.log(error)
-      return { message: 'Database Error: Failed to Update List.' };
-    }
-  }
-  else {
-    try {
-      await sql`
-        INSERT INTO tout_doux_lists (name, user_id, list_status_id)
-        VALUES (
-          ${name},
-          ${session?.user?.id},
-          (SELECT id FROM tout_doux_list_status WHERE name = 'private')
-        )
-      `;
-    } catch (error) {
-      console.log(error)
-      return { message: 'Database Error: Failed to Insert List.' };
-    }
-  }
- 
-  revalidatePath('/home');
-  redirect('/home');
 }
 
 export async function deleteTodo(id: string, listId: string) {
