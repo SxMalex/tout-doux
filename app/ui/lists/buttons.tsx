@@ -2,15 +2,22 @@
 import { PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { insertList, deleteList } from '@/app/lib/actions';
+import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 
 export function CreateListButton() {
 
+  const pathname = usePathname();
+  const { replace } = useRouter();
+
   const createList = async () => {
-    const listName = (document.getElementById('search') as HTMLInputElement)?.value;
+    const searchInput = document.getElementById('search') as HTMLInputElement;
+    const listName = searchInput?.value;
     if (!listName) {
       return;
     }
     await insertList(listName);
+    searchInput.value = '';
+    replace(pathname);
   }
 
   return (

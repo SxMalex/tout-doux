@@ -2,15 +2,22 @@
 import { CheckIcon, TrashIcon, PlusIcon, ListBulletIcon, ArrowPathIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { deleteTodo, insertTodo, doneTodo, todoTodo, inProgressTodo } from '@/app/lib/actions';
+import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 
 export function CreateTodoButton({ listId }: { listId: string }) {
 
+  const pathname = usePathname();
+  const { replace } = useRouter();
+
   const createTodo = async () => {
-    const todoName = (document.getElementById('search') as HTMLInputElement)?.value;
+    const searchInput = document.getElementById('search') as HTMLInputElement;
+    const todoName = searchInput?.value;
     if (!todoName) {
       return;
     }
     await insertTodo(listId, todoName);
+    searchInput.value = '';
+    replace(pathname);
   }
 
   return (
