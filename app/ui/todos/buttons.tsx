@@ -1,5 +1,5 @@
 'use client';
-import { CheckIcon, TrashIcon, PlusIcon, ListBulletIcon, PlayIcon } from '@heroicons/react/24/outline';
+import { CheckIcon, TrashIcon, PlusIcon, ListBulletIcon, ArrowPathIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { deleteTodo, insertTodo, doneTodo, todoTodo, inProgressTodo } from '@/app/lib/actions';
 
@@ -76,7 +76,7 @@ export function InProgressTodoButton({ id,  listId, status}: { id: string, listI
     <form action={inProgressTodoWithId}>
       <button className={buttonClass}>
         <span className="sr-only">InProgress</span>
-        <PlayIcon className="w-5" />
+        <ArrowPathIcon className="w-5" />
       </button>
     </form>
   );

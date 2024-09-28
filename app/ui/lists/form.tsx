@@ -11,7 +11,6 @@ export default function EditListForm({list}: {list: ListForm }) {
   const [isPublic, setIsPublic] = useState(list?.status === "public");
 
   const handleToggleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.checked)
     setIsPublic(e.target.checked);
     await updateListStatus({
       id: list.id,
