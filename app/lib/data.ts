@@ -102,6 +102,7 @@ export async function fetchFilteredTodos(
       WHERE todos.name ILIKE ${`%${query}%`}
         AND lists.id = ${`${list_id}`}::uuid
         AND lists.user_id = ${`${session?.user?.id}`}::uuid
+      ORDER BY todos.create_time DESC, todos.name ASC
       LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
     `;
     return todos.rows;
