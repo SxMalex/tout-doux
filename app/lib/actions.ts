@@ -161,6 +161,19 @@ export async function deleteTodo(id: string, listId: string) {
   revalidatePath(`/lists/${listId}/edit`);
 }
 
+export async function insertTodo(listId: string, todoName: string){
+  const session = await auth()
+  await sql`
+      INSERT INTO tout_doux_todos (name, list_id, todo_status_id)
+      VALUES (
+        ${todoName},
+        ${listId},
+        (SELECT id FROM tout_doux_todo_status WHERE name = 'todo')
+      )
+  `;
+  revalidatePath(`/lists/${listId}/edit`);
+}
+
 export async function upsertTodo(
   id: string | undefined,
   listId: string,

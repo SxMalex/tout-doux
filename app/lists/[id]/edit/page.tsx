@@ -9,6 +9,7 @@ import { TodoTableSkeleton } from '@/app/ui/skeletons';
 import { Metadata } from 'next';
 import { fetchTodosPages } from '@/app/lib/data';
 import Pagination from '@/app/ui/lists/pagination';
+import { CreateTodoButton } from '@/app/ui/todos/buttons';
  
 export const metadata: Metadata = {
   title: 'Edit Lists',
@@ -41,10 +42,8 @@ export default async function Page({
       <ListForm list={list}/>
       <div className="w-full">
         <div className="m-4 flex items-center justify-between gap-2 ">
-          <Search placeholder="Search todos..." />
-        </div>
-        <div className="m-4 flex items-center justify-between gap-2 ">
-          <TodoForm todo={null} listId={list.id} insert={true}/>
+          <Search placeholder="Search or add todos" />
+          <CreateTodoButton listId={id}/>
         </div>
         <Suspense key={query + currentPage} fallback={<TodoTableSkeleton />}>
           <Table query={query} currentPage={currentPage} listId={id}/>
