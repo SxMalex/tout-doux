@@ -30,4 +30,5 @@ export type ListForm = {
 export type TodosTable = {
   id: string;
   name: string;
+  status: string;
 };
