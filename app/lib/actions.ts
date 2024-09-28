@@ -63,7 +63,7 @@ export async function deleteList(id: string) {
 }
 
 
-export async function updateListStatus({id, status,}: {id: string; status: string;}) {
+export async function updateListStatus({id, status}: {id: string; status: string;}) {
   try {
     await sql`
       UPDATE tout_doux_lists
@@ -112,6 +112,48 @@ export async function deleteTodo(id: string, listId: string) {
     revalidatePath(`/lists/${listId}/edit`);
   } catch (error) {
     return { message: 'Database Error: Failed to Delete Todo.' };
+  }
+  revalidatePath(`/lists/${listId}/edit`);
+}
+
+export async function doneTodo(id: string, listId: string) {
+  try {
+    await sql`
+      UPDATE tout_doux_todos
+      SET todo_status_id = (SELECT id FROM tout_doux_todo_status WHERE name = 'done')
+      WHERE id = ${id} AND list_id = ${listId}
+    `;
+    revalidatePath(`/lists/${listId}/edit`);
+  } catch (error) {
+    return { message: 'Database Error: Failed to Done Todo.' };
+  }
+  revalidatePath(`/lists/${listId}/edit`);
+}
+
+export async function todoTodo(id: string, listId: string) {
+  try {
+    await sql`
+      UPDATE tout_doux_todos
+      SET todo_status_id = (SELECT id FROM tout_doux_todo_status WHERE name = 'todo')
+      WHERE id = ${id} AND list_id = ${listId}
+    `;
+    revalidatePath(`/lists/${listId}/edit`);
+  } catch (error) {
+    return { message: 'Database Error: Failed to todo Todo.' };
+  }
+  revalidatePath(`/lists/${listId}/edit`);
+}
+
+export async function inProgressTodo(id: string, listId: string) {
+  try {
+    await sql`
+      UPDATE tout_doux_todos
+      SET todo_status_id = (SELECT id FROM tout_doux_todo_status WHERE name = 'in progress')
+      WHERE id = ${id} AND list_id = ${listId}
+    `;
+    revalidatePath(`/lists/${listId}/edit`);
+  } catch (error) {
+    return { message: 'Database Error: Failed to in progressTodo Todo.' };
   }
   revalidatePath(`/lists/${listId}/edit`);
 }

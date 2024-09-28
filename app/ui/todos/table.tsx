@@ -1,4 +1,4 @@
-import { DeleteTodo } from '@/app/ui/todos/buttons';
+import { DeleteTodoButton, DoneTodoButton, TodoTodoButton,  InProgressTodoButton} from '@/app/ui/todos/buttons';
 import { fetchFilteredTodos } from '@/app/lib/data';
 import TodoForm from '@/app/ui/todos/form';
 
@@ -21,7 +21,10 @@ export default async function TodosTable({
               (todo) => (
                 <div key={todo.id} className="flex justify-between mb-1 w-full bg-white p-2 hover:shadow-lg gap-2">
                   <TodoForm todo={todo} listId={listId}/>
-                  <DeleteTodo id={todo.id} listId={listId}/>
+                  <TodoTodoButton id={todo.id} listId={listId} status={todo.status}/>
+                  <InProgressTodoButton id={todo.id} listId={listId} status={todo.status}/>
+                  <DoneTodoButton id={todo.id} listId={listId} status={todo.status}/>
+                  <DeleteTodoButton id={todo.id} listId={listId}/>
                 </div>
               )
             )

@@ -96,13 +96,15 @@ export async function fetchFilteredTodos(
     const todos = await sql<TodosTable>`
       SELECT
         todos.id,
-        todos.name
+        todos.name,
+        todo_status.name AS status
       FROM tout_doux_todos AS todos
+      JOIN tout_doux_todo_status AS todo_status ON todos.todo_status_id = todo_status.id
       JOIN tout_doux_lists AS lists ON todos.list_id = lists.id
       WHERE todos.name ILIKE ${`%${query}%`}
         AND lists.id = ${`${list_id}`}::uuid
         AND lists.user_id = ${`${session?.user?.id}`}::uuid
-      ORDER BY todos.create_time DESC, todos.name ASC
+      ORDER BY status DESC, todos.create_time DESC, todos.name ASC
       LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
     `;
     return todos.rows;

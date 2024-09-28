@@ -10,13 +10,14 @@ export default function EditListForm({list}: {list: ListForm }) {
 
   const [isPublic, setIsPublic] = useState(list?.status === "public");
 
-  const handleToggleChange = useDebouncedCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleToggleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target.checked)
     setIsPublic(e.target.checked);
     await updateListStatus({
       id: list.id,
       status: e.target.checked ? 'public' : 'private',
     });
-  }, 300);
+  };
 
   const handleListUpdateName = useDebouncedCallback(async (listName) => {
     if(listName){
