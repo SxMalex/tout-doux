@@ -6,8 +6,7 @@ import { updateListStatus, updateListName } from '@/app/lib/actions';
 import { useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 
-export default function EditListForm({list}: {list: ListForm }) {
-
+export default function EditListForm({ list }: { list: ListForm }) {
   const [isPublic, setIsPublic] = useState(list?.status === "public");
 
   const handleToggleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -19,11 +18,11 @@ export default function EditListForm({list}: {list: ListForm }) {
   };
 
   const handleListUpdateName = useDebouncedCallback(async (listName) => {
-    if(listName){
+    if (listName) {
       await updateListName({
         id: list.id,
-        name: listName, 
-     });
+        name: listName,
+      });
     }
   }, 300);
 
@@ -48,11 +47,18 @@ export default function EditListForm({list}: {list: ListForm }) {
       </div>
       <div className="flex justify-end gap-4">
         <div className="flex items-center justify-evenly w-full">
-          <div><EyeSlashIcon className="w-5 pointer-events-none text-gray-500 peer-focus:text-gray-900" /></div>
+          {/* Transition sur les icônes */}
+          <div>
+            <EyeSlashIcon
+              className={`w-5 pointer-events-none transition-colors duration-500 ${
+                !isPublic ? 'text-blue-900' : 'text-gray-500'
+              }`}
+            />
+          </div>
           <label htmlFor="listStatus" className="flex items-center cursor-pointer">
-            <input 
-              type="checkbox" 
-              id="listStatus" 
+            <input
+              type="checkbox"
+              id="listStatus"
               className="sr-only peer"
               checked={isPublic}
               onChange={handleToggleChange}
@@ -65,7 +71,13 @@ export default function EditListForm({list}: {list: ListForm }) {
               ></div>
             </div>
           </label>
-          <div><EyeIcon className="w-5 pointer-events-none text-gray-500 peer-focus:text-gray-900" /></div>
+          <div>
+            <EyeIcon
+              className={`w-5 pointer-events-none transition-colors duration-500 ${
+                isPublic ? 'text-blue-900' : 'text-gray-500'
+              }`}
+            />
+          </div>
         </div>
       </div>
     </form>
