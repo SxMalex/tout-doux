@@ -59,7 +59,7 @@ export default function EditListForm({list}: {list: ListForm }) {
             />
             <div className="block bg-blue-900 w-16 h-9 p-1 rounded-full">
               <div
-                className={`bg-blue-600 w-7 h-7 rounded-full transition-all duration-500 ${
+                className={`bg-blue-500 w-7 h-7 rounded-full transition-all duration-500 ${
                   isPublic ? 'translate-x-7 bg-white' : ''
                 }`}
               ></div>
