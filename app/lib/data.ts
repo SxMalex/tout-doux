@@ -31,6 +31,7 @@ export async function fetchFilteredLists(
       JOIN tout_doux_users AS users ON lists.user_id = users.id
       WHERE lists.name ILIKE ${`%${query}%`}
         AND lists.user_id = ${`${session?.user?.id}`}::uuid
+      ORDER BY lists.create_time, lists.name DESC
       LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
     `;
     return lists.rows;
