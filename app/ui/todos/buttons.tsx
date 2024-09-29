@@ -1,7 +1,7 @@
 'use client';
-import { CheckIcon, TrashIcon, PlusIcon, ListBulletIcon, ArrowPathIcon } from '@heroicons/react/24/outline';
+import { CheckIcon, TrashIcon, PlusIcon, RocketLaunchIcon, ArrowPathIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
-import { deleteTodo, insertTodo, doneTodo, todoTodo, inProgressTodo } from '@/app/lib/actions';
+import { deleteTodo, insertTodo, doneTodo, todoTodo, inProgressTodo, failTodo } from '@/app/lib/actions';
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 
 export function CreateTodoButton({ listId }: { listId: string }) {
@@ -68,14 +68,14 @@ export function TodoTodoButton({ id,  listId, status}: { id: string, listId: str
     <form action={todoTodoWithId}>
       <button className={buttonClass}>
         <span className="sr-only">Todo</span>
-        <ListBulletIcon className="w-5" />
+        <RocketLaunchIcon className="w-5" />
       </button>
     </form>
   );
 }
 
 export function InProgressTodoButton({ id,  listId, status}: { id: string, listId: string, status: string}) {
-  const inProgressTodoWithId =inProgressTodo.bind(null, id, listId);
+  const inProgressTodoWithId = inProgressTodo.bind(null, id, listId);
   const buttonClass = status === 'in progress'
     ? 'rounded-md border p-2 bg-blue-500 text-white hover:bg-blue-400'
     : 'rounded-md border p-2 hover:bg-blue-400';
@@ -88,3 +88,19 @@ export function InProgressTodoButton({ id,  listId, status}: { id: string, listI
     </form>
   );
 }
+
+export function FailTodoButton({ id,  listId, status}: { id: string, listId: string, status: string}) {
+  const failTodoWithId = failTodo.bind(null, id, listId);
+  const buttonClass = status === 'fail'
+    ? 'rounded-md border p-2 bg-neutral-500 text-white hover:bg-neutral-400'
+    : 'rounded-md border p-2 hover:bg-neutral-400';
+  return (
+    <form action={failTodoWithId}>
+      <button className={buttonClass}>
+        <span className="sr-only">InProgress</span>
+        <XMarkIcon className="w-5" />
+      </button>
+    </form>
+  );
+}
+

@@ -1,4 +1,4 @@
-import { DeleteTodoButton, DoneTodoButton, TodoTodoButton,  InProgressTodoButton} from '@/app/ui/todos/buttons';
+import { DeleteTodoButton, DoneTodoButton, TodoTodoButton,  InProgressTodoButton, FailTodoButton } from '@/app/ui/todos/buttons';
 import { fetchFilteredTodos } from '@/app/lib/data';
 import TodoForm from '@/app/ui/todos/form';
 
@@ -21,10 +21,17 @@ export default async function TodosTable({
               (todo) => (
                 <div key={todo.id} className="flex justify-between mb-1 w-full bg-white p-2 hover:shadow-lg gap-2">
                   <TodoForm todo={todo} listId={listId}/>
-                  <TodoTodoButton id={todo.id} listId={listId} status={todo.status}/>
-                  <InProgressTodoButton id={todo.id} listId={listId} status={todo.status}/>
-                  <DoneTodoButton id={todo.id} listId={listId} status={todo.status}/>
-                  <DeleteTodoButton id={todo.id} listId={listId}/>
+                  <div>
+                    <div className="flex justify-between">
+                      <TodoTodoButton id={todo.id} listId={listId} status={todo.status}/>
+                      <InProgressTodoButton id={todo.id} listId={listId} status={todo.status}/>
+                      <DoneTodoButton id={todo.id} listId={listId} status={todo.status}/>
+                    </div>
+                    <div className="flex justify-between">
+                      <FailTodoButton id={todo.id} listId={listId} status={todo.status}/>
+                      <DeleteTodoButton id={todo.id} listId={listId}/>
+                    </div>
+                  </div>
                 </div>
               )
             )

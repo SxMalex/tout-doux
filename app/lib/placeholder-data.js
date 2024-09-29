@@ -39,8 +39,9 @@ const lists = [
 
 const todoStatus = [
   {id: 'b8d64618-d04a-4694-9874-fa957499d3e8', name: 'todo'},
-  {id: '39f4e352-bcca-40e7-816e-040837738114',name: 'in progress'},
-  {id: '63a9bbac-1906-448e-ac73-c87d9eabd1e5',name: 'done'},
+  {id: '39f4e352-bcca-40e7-816e-040837738114', name: 'in progress'},
+  {id: '63a9bbac-1906-448e-ac73-c87d9eabd1e5', name: 'done'},
+  {id: 'e3325ea7-c675-4590-9230-7fd011599483', name: 'fail'},
 ]
 
 const todos = [

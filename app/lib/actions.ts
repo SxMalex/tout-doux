@@ -158,6 +158,20 @@ export async function inProgressTodo(id: string, listId: string) {
   revalidatePath(`/lists/${listId}/edit`);
 }
 
+export async function failTodo(id: string, listId: string) {
+  try {
+    await sql`
+      UPDATE tout_doux_todos
+      SET todo_status_id = (SELECT id FROM tout_doux_todo_status WHERE name = 'fail')
+      WHERE id = ${id} AND list_id = ${listId}
+    `;
+    revalidatePath(`/lists/${listId}/edit`);
+  } catch (error) {
+    return { message: 'Database Error: Failed to fail Todo Todo.' };
+  }
+  revalidatePath(`/lists/${listId}/edit`);
+}
+
 export async function insertTodo(listId: string, todoName: string){
   const session = await auth()
   await sql`
