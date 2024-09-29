@@ -2,19 +2,69 @@
 import { z } from 'zod';
 import { sql } from '@vercel/postgres';
 import { revalidatePath } from 'next/cache';
-import { redirect } from 'next/navigation';
 import { signIn, signOut, auth } from '@/auth';
 import { AuthError } from 'next-auth';
+const bcrypt = require('bcrypt');
 
-const listFormSchema = z.object({
-  name: z.string(),
-  // userId: z.string(),
+const signupSchema = z.object({
+  username: z.string().min(3, { message: "Username must be at least 3 characters long" }),
+  password: z.string().min(6, { message: "Password must be at least 6 characters long" }),
+  confirmPassword: z.string().min(6, { message: "Password confirmation must match" }),
 });
 
-const todoFormSchema = z.object({
-  name: z.string(),
-  // listId: z.string(),
-});
+export async function registerUser(formData: { username: string, password: string, confirmPassword: string }) {
+  // Parse and validate the form data
+  const parsedData = signupSchema.safeParse({
+    username: formData.username,
+    password: formData.password,
+    confirmPassword: formData.confirmPassword,
+  });
+
+  if (!parsedData.success) {
+    // If validation fails, return the error messages
+    return {
+      errors: parsedData.error.flatten().fieldErrors,
+      message: 'Validation Failed',
+    };
+  }
+
+  const { username, password, confirmPassword } = parsedData.data;
+
+  // Ensure password and confirmPassword match
+  if (password !== confirmPassword) {
+    return {
+      message: 'Passwords do not match',
+    };
+  }
+
+  // Hash the password
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  try {
+    // Insert the new user into the database
+    await sql`
+      INSERT INTO tout_doux_users (name, password)
+      VALUES (${username}, ${hashedPassword})
+    `;
+
+    // Attempt to sign in the user after successful registration
+    const signInResponse = await signIn('credentials', {
+      redirect: false,  // We handle the redirect manually
+      email: username,
+      password: password,
+    });
+
+    if (signInResponse && signInResponse.error) {
+      // Handle sign-in errors (if any)
+      return { message: `Registration successful, but login failed: ${signInResponse.error}` };
+    }
+    
+  } catch (error) {
+    console.error('Database error:', error);
+    return { message: 'Database Error: Failed to register user' };
+  }
+}
+
 
 export async function authenticate(
   prevState: string | undefined,
