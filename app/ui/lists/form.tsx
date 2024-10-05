@@ -47,7 +47,6 @@ export default function EditListForm({ list }: { list: ListForm }) {
       </div>
       <div className="flex justify-end gap-4">
         <div className="flex items-center justify-evenly w-full">
-          {/* Transition sur les icônes */}
           <div>
             <EyeSlashIcon
               className={`w-5 pointer-events-none transition-colors duration-500 ${

@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import { PowerIcon } from '@heroicons/react/24/outline';
 import { logout } from '@/app/lib/actions';
+import { CheckIcon, TrashIcon, PlusIcon, RocketLaunchIcon, ArrowPathIcon, XMarkIcon } from '@heroicons/react/24/outline';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
@@ -28,4 +29,18 @@ export function ButtonLogOut(){
       </button>
     </form>
   )
+}
+
+
+export function IconTemplate({status}:{status: string}){
+  switch (status) {
+    case 'done':
+      return (<CheckIcon className={`w-5`} />);
+    case 'todo':
+      return (<RocketLaunchIcon className={`w-5`} />);
+    case 'in progress':
+      return (<ArrowPathIcon className={`w-5`} />);
+    case 'fail':
+      return (<XMarkIcon className={`w-5`} />);
+  }
 }

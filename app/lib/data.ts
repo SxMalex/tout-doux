@@ -206,15 +206,32 @@ export async function getPublicTodoByListId(list_id: string) {
   try {
     const todos = await sql`
       SELECT 
-        todos.name, todos.id
+        todos.name, todos.id, todo_status.name AS status
       FROM tout_doux_todos AS todos
+      JOIN tout_doux_todo_status AS todo_status ON todos.todo_status_id = todo_status.id
       JOIN tout_doux_lists AS lists ON todos.list_id = lists.id
       JOIN tout_doux_list_status AS list_status ON lists.list_status_id = list_status.id
       WHERE list_status.name = 'public' AND lists.id = ${`${list_id}`}::uuid
+      ORDER BY status DESC, todos.create_time DESC, todos.name ASC
     `;
     return todos.rows
   } catch (error) {
     console.error('Failed to get public todos by list id')
     throw new Error('Failed to get public todos by list id')
+  }
+}
+
+export function getColorByStatus(status: string) {
+  switch (status) {
+    case 'done':
+      return 'green';
+    case 'todo':
+      return 'yellow';
+    case 'in progress':
+      return 'blue';
+    case 'fail':
+      return 'neutral';
+    default:
+      console.log(status)
   }
 }
